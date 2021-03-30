@@ -1,5 +1,21 @@
 vim.cmd('syntax reset')
 
+---------------------------------------------------------------
+--
+-- (1) predefined 28 terminal colors (syntax.c)
+-- 
+--     black       white            brown       none
+--     grey        lightgrey        darkgrey
+--     gray        lightgray        darkgray
+--     blue        lightblue        darkblue
+--     green       lightgreen       darkgreen
+--     cyan        lightcyan        darkcyan
+--     red         lightred         darkred
+--     magenta     lightmagenta     darkmagenta
+--     yellow      lightyellow      darkyellow
+--
+---------------------------------------------------------------
+
 local set_color_scheme = function(scheme)
   for k1 in pairs(scheme) do
     local cmd = 'hi ' .. k1
@@ -32,7 +48,9 @@ local default_scheme = {
 
   Folded        = {ctermfg='darkgrey',   ctermbg='none',        cterm='bold',           guifg='#808080',   guibg='#000040', term='bold'},
   FoldColumn    = {ctermfg='darkgrey',   ctermbg='none',        cterm='bold',           guifg='#808080',   guibg='#000040', term='bold'},
-  LineNr        = {ctermfg='green',      ctermbg='none',        cterm='',               guifg='#90f020',   guibg=''},
+  LineNr        = {ctermfg='darkyellow',      ctermbg='none',        cterm='',               guifg='#90f020',   guibg=''},
+  CursorLineNr  = {ctermfg='green',      ctermbg='none',        cterm='',              guifg='red',       guibg='none'},
+  CursorLine    = {ctermfg='none',       ctermbg='234',         cterm='none',           guifg='none',      guibg='none'},
 
   DiffAdd       = {ctermfg='',           ctermbg='darkblue',    cterm='',               guifg='',          guibg='darkblue'},
   DiffChange    = {ctermfg='',           ctermbg='magenta',     cterm='',               guifg='',          guibg='darkmagenta'},
@@ -57,7 +75,7 @@ local default_scheme = {
   StatusLineNC  = {ctermfg='white',      ctermbg='none',        cterm='underline',      guifg='white',     guibg='black'},
   VertSplit     = {ctermfg='black',      ctermbg='white',       cterm='',               guifg='white',     guibg='black'},
 
-  Pmenu         = {ctermfg='white',      ctermbg='236',         cterm='',               guifg='#ff80ff',   guibg=''},
+  Pmenu         = {ctermfg='white',      ctermbg='none',         cterm='',               guifg='#ff80ff',   guibg=''},
   PmenuSel      = {ctermfg='green',      ctermbg='none',        cterm='',               guifg='#60ff60',   guibg=''},
   PmenuSbar     = {ctermfg='67',         ctermbg='none',        cterm='underline',      guifg='',          guibg='', term='underline'},
   PmenuThumb    = {ctermfg='',           ctermbg='none',        cterm='',               guifg=''  ,        guibg='none'},
