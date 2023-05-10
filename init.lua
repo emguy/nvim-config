@@ -71,19 +71,22 @@ packer.startup({
     use 'nvim-tree/nvim-tree.lua'
     use 'nvim-tree/nvim-web-devicons'
     use 'neovim/nvim-lspconfig'
-    use 'ibhagwan/fzf-lua'
-    use 'kdheepak/lazygit.nvim'
-    use 'ntpeters/vim-better-whitespace'
-    use 'fatih/vim-go'
+    use { 'nvim-telescope/telescope.nvim', tag = '0.1.1', requires = { {'nvim-lua/plenary.nvim'} } }
+    use {"akinsho/toggleterm.nvim", tag = '*', config = function() require("toggleterm").setup() end }
     use { 'williamboman/mason.nvim', run=":MasonUpdate" }
+    use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+    use 'chrisbra/Colorizer'
+    use 'fatih/vim-go'
+    use 'ntpeters/vim-better-whitespace'
   end,
 })
 
-require('modules.uischeme')
 require('mason').setup()
+require('modules.uischeme')
 require('modules.lsp')
 require('modules.nvimtree')
-require('fzf-lua').setup({'default'})
+require('modules.cwdrooter')
+require('modules.toggleterm')
 
 -- keymaps --
 vim.api.nvim_set_keymap('t', '<c-q>', '<c-\\><c-n>', {noremap=true})
@@ -92,12 +95,15 @@ vim.api.nvim_set_keymap('n', '<c-n>',     '<cmd>bnext<cr>', {noremap=true})
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>luafile ~/.config/nvim/init.lua<cr><cmd>echo "~/.config/nvim/init.lua is reloaded."<cr>', {noremap=true})
 vim.api.nvim_set_keymap('n', '<leader>c', '<c-w>s<cmd>terminal<cr>i', {noremap=true})
 
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua require("fzf-lua").files({ cwd = "~/git" })<cr>', {noremap=true})
-vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>lua require("fzf-lua").buffers({ cwd = "~/git" })<cr>', {noremap=true})
+-- telescope --
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 -- customized commands --
 vim.api.nvim_create_user_command('BD', 'bp|sp|bn|bd', {})
-vim.api.nvim_create_user_command('G', 'LazyGit', {})
 
 -- fix syntax highlighting for big files --
 vim.api.nvim_create_autocmd('BufEnter', { pattern='*', command=[[ syntax sync fromstart ]]} )
@@ -107,3 +113,5 @@ vim.api.nvim_create_autocmd('BufEnter', { pattern='*', command=[[ setlocal forma
 vim.api.nvim_create_autocmd('BufEnter', { pattern='*.yaml,*.yml', command=[[ set indentkeys=e ]] })
 -- move cursor to the last remembered position --
 vim.api.nvim_create_autocmd('BufReadPost', { pattern='*', command=[[ if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif ]] })
+-- fix 'ntpeters/vim-better-whitespace' on terminal mode --
+vim.api.nvim_create_autocmd('TermOpen', { pattern='*', command=[[ DisableWhitespace ]]} )

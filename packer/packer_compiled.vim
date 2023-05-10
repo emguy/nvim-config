@@ -77,25 +77,20 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["fzf-lua"] = {
+  Colorizer = {
     loaded = true,
-    path = "/Users/yu6114820/.config/nvim/packer/start/fzf-lua",
-    url = "https://github.com/ibhagwan/fzf-lua"
+    path = "/Users/yu6114820/.config/nvim/packer/start/Colorizer",
+    url = "https://github.com/chrisbra/Colorizer"
+  },
+  ["diffview.nvim"] = {
+    loaded = true,
+    path = "/Users/yu6114820/.config/nvim/packer/start/diffview.nvim",
+    url = "https://github.com/sindrets/diffview.nvim"
   },
   ["mason.nvim"] = {
     loaded = true,
     path = "/Users/yu6114820/.config/nvim/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
-  },
-  ["nvim-fzf"] = {
-    loaded = true,
-    path = "/Users/yu6114820/.config/nvim/packer/start/nvim-fzf",
-    url = "https://github.com/vijaymarupudi/nvim-fzf"
-  },
-  ["nvim-fzf-commands"] = {
-    loaded = true,
-    path = "/Users/yu6114820/.config/nvim/packer/start/nvim-fzf-commands",
-    url = "https://github.com/vijaymarupudi/nvim-fzf-commands"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -117,6 +112,22 @@ _G.packer_plugins = {
     path = "/Users/yu6114820/.config/nvim/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/Users/yu6114820/.config/nvim/packer/start/plenary.nvim",
+    url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["telescope.nvim"] = {
+    loaded = true,
+    path = "/Users/yu6114820/.config/nvim/packer/start/telescope.nvim",
+    url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["toggleterm.nvim"] = {
+    config = { "\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15toggleterm\frequire\0" },
+    loaded = true,
+    path = "/Users/yu6114820/.config/nvim/packer/start/toggleterm.nvim",
+    url = "https://github.com/akinsho/toggleterm.nvim"
+  },
   ["vim-better-whitespace"] = {
     loaded = true,
     path = "/Users/yu6114820/.config/nvim/packer/start/vim-better-whitespace",
@@ -130,6 +141,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: toggleterm.nvim
+time([[Config for toggleterm.nvim]], true)
+try_loadstring("\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
+time([[Config for toggleterm.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
