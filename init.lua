@@ -45,17 +45,17 @@ vim.o.whichwrap      = 'b,s,<,>,[,]'
 vim.o.wildignorecase = true
 
 -- buffer local --
-vim.bo.autoindent     = false
-vim.bo.cindent        = false
-vim.bo.expandtab      = true
-vim.bo.shiftwidth     = 2
-vim.bo.smartindent    = false
-vim.bo.softtabstop    = 2
-vim.bo.tabstop        = 2
-vim.bo.undofile       = true
+vim.o.autoindent     = false
+vim.o.cindent        = false
+vim.o.expandtab      = true
+vim.o.shiftwidth     = 2
+vim.o.smartindent    = false
+vim.o.softtabstop    = 2
+vim.o.tabstop        = 2
+vim.o.undofile       = true
 
 -- window local --
-vim.wo.number         = true
+vim.wo.number         = false
 vim.wo.wrap           = false
 vim.wo.cursorline     = true
 
@@ -78,6 +78,7 @@ packer.startup({
     use 'chrisbra/Colorizer'
     use 'fatih/vim-go'
     use 'ntpeters/vim-better-whitespace'
+    use 'hashivim/vim-terraform'
   end,
 })
 
@@ -89,7 +90,7 @@ require('modules.cwdrooter')
 require('modules.toggleterm')
 
 -- keymaps --
-vim.api.nvim_set_keymap('t', '<c-q>', '<c-\\><c-n>', {noremap=true})
+vim.api.nvim_set_keymap('t', '<c-q>',     '<c-\\><c-n>', {noremap=true})
 vim.api.nvim_set_keymap('n', '<c-p>',     '<cmd>bprevious<cr>', {noremap=true})
 vim.api.nvim_set_keymap('n', '<c-n>',     '<cmd>bnext<cr>', {noremap=true})
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>luafile ~/.config/nvim/init.lua<cr><cmd>echo "~/.config/nvim/init.lua is reloaded."<cr>', {noremap=true})
@@ -97,7 +98,7 @@ vim.api.nvim_set_keymap('n', '<leader>c', '<c-w>s<cmd>terminal<cr>i', {noremap=t
 
 -- telescope --
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>ff', function() builtin.find_files({cwd="~/git/", no_ignore_parent=true}) end, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})

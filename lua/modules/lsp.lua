@@ -6,18 +6,20 @@ lspconfig.tsserver.setup {}
 lspconfig.bashls.setup {}
 lspconfig.dockerls.setup{}
 lspconfig.jsonls.setup{}
-lspconfig.docker_compose_language_service.setup{}
--- lspconfig.yamlls.setup {
---   settings = {
---     yaml = {
---       schemas = {
---         ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
---         ["../path/relative/to/file.yml"] = "/.github/workflows/*",
---         ["/path/from/root/of/project"] = "/.github/workflows/*"
---       },
---     },
---   }
--- }
+lspconfig.yamlls.setup {
+  settings = {
+    yaml = {
+      customTags = {
+        "!reference sequence",
+      },
+      schemas = {
+        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+        ["../path/relative/to/file.yml"] = "/.github/workflows/*",
+        ["/path/from/root/of/project"] = "/.github/workflows/*"
+      }
+    },
+  }
+}
 lspconfig.lua_ls.setup {
   settings = {
     Lua = {
