@@ -6,11 +6,30 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.cmd('command! TR NvimTreeToggle')
 
-local nvimtree_api = require("nvim-tree.api")
+local api = require("nvim-tree.api")
+local view = require "nvim-tree.view"
 
 local function open_file_without_focus(node)
-  nvimtree_api.node.open.edit(node)
-  nvimtree_api.tree.focus()
+  api.node.open.edit(node)
+  api.tree.focus()
+end
+
+local function clear_buffer()
+  local bufs = vim.fn.getbufinfo { bufloaded = 1, buflisted = 1 }
+  for _, buf in pairs(bufs) do
+    if buf.name == require("nvim-tree.lib").get_node_at_cursor().absolute_path then
+      if buf.hidden == 0 and (#bufs > 1 or view.View.float.enable) then
+        local winnr = vim.api.nvim_get_current_win()
+        vim.api.nvim_set_current_win(buf.windows[1])
+        vim.cmd ":bn"
+        if not view.View.float.enable then
+          vim.api.nvim_set_current_win(winnr)
+        end
+      end
+      vim.api.nvim_buf_delete(buf.bufnr, { force = true })
+      return
+    end
+  end
 end
 
 local function my_on_attach(bufnr)
@@ -18,15 +37,16 @@ local function my_on_attach(bufnr)
    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   end
   -- use all default mappings
-  nvimtree_api.config.mappings.default_on_attach(bufnr)
+  api.config.mappings.default_on_attach(bufnr)
 
   -- copy default mappings here from defaults in next section
-  vim.keymap.set('n', 'c', nvimtree_api.tree.change_root_to_node,          opts('Change Dir'))
-  vim.keymap.set('n', 'P', nvimtree_api.tree.change_root_to_parent,          opts('Parent Dir'))
+  vim.keymap.set('n', 'P', api.tree.change_root_to_parent,          opts('Parent Dir'))
+  vim.keymap.set('n', 'O', api.tree.expand_all,          opts('Expand All'))
+  vim.keymap.set('n', 'c', api.fs.create,          opts('Create Node'))
+  vim.keymap.set('n', 'y', api.fs.copy.node,          opts('Copy Node'))
+  vim.keymap.set('n', 'p', api.fs.paste,            opts('Paste Node'))
+  vim.keymap.set('n', 'x', clear_buffer,                     opts('Close Buff'))
   vim.keymap.set('n', 'o', open_file_without_focus,          opts('Open File'))
-  vim.keymap.set('n', 'O', nvimtree_api.tree.expand_all,          opts('Expand All'))
-  vim.keymap.set('n', 'C', nvimtree_api.fs.create,          opts('Create Node'))
-  vim.keymap.set('n', 'y', nvimtree_api.fs.copy.node,          opts('Copy Node'))
 end
 
 -- OR setup with some options

@@ -19,5 +19,5 @@ local termExec = function(cmd, opt)
 end
 
 vim.api.nvim_create_user_command('G', function() termExec('lazygit') end, { nargs = 0 })
-vim.api.nvim_create_user_command('Gblame', function() termExec('git blame ' .. vim.fn.expand('%:p')) end, { nargs = 0 })
-vim.api.nvim_create_user_command('Gdiff', function(opt) termExec('git diff', opt) end, { nargs = '*' })
+vim.api.nvim_create_user_command('Gblame', function() termExec('LESS= git blame ' .. vim.fn.expand('%:p')) end, { nargs = 0 })
+vim.api.nvim_create_user_command('Gdiff', function(opt) termExec('LESS= git diff', opt) end, { nargs = '*' })
