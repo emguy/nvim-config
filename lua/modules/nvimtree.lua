@@ -32,6 +32,9 @@ local function clear_buffer()
   end
 end
 
+
+local toggle_expand = require("nvimtree-toggle-expand").wrap_fn
+
 local function my_on_attach(bufnr)
   local function opts(desc)
    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -40,13 +43,13 @@ local function my_on_attach(bufnr)
   api.config.mappings.default_on_attach(bufnr)
 
   -- copy default mappings here from defaults in next section
-  vim.keymap.set('n', 'P', api.tree.change_root_to_parent,          opts('Parent Dir'))
-  vim.keymap.set('n', 'O', api.tree.expand_all,          opts('Expand All'))
-  vim.keymap.set('n', 'c', api.fs.create,          opts('Create Node'))
-  vim.keymap.set('n', 'y', api.fs.copy.node,          opts('Copy Node'))
-  vim.keymap.set('n', 'p', api.fs.paste,            opts('Paste Node'))
-  vim.keymap.set('n', 'x', clear_buffer,                     opts('Close Buff'))
-  vim.keymap.set('n', 'o', open_file_without_focus,          opts('Open File'))
+  vim.keymap.set('n', 'P', api.tree.change_root_to_parent, opts('Parent Dir'))
+  vim.keymap.set('n', 'c', api.fs.create, opts('Create Node'))
+  vim.keymap.set('n', 'y', api.fs.copy.node, opts('Copy Node'))
+  vim.keymap.set('n', 'p', api.fs.paste, opts('Paste Node'))
+  vim.keymap.set('n', 'x', clear_buffer, opts('Close Buff'))
+  vim.keymap.set('n', 'o', open_file_without_focus, opts('Open File'))
+  vim.keymap.set('n', 'O', toggle_expand, opts('Toggle node expansion'))
 end
 
 -- OR setup with some options
