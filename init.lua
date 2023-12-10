@@ -71,7 +71,7 @@ packer.startup({
     use 'nvim-tree/nvim-tree.lua'
     use 'nvim-tree/nvim-web-devicons'
     use 'neovim/nvim-lspconfig'
-    use { 'nvim-telescope/telescope.nvim', tag = '0.1.1', requires = { {'nvim-lua/plenary.nvim'} } }
+    use { 'nvim-telescope/telescope.nvim', tag = '0.1.4', requires = { {'nvim-lua/plenary.nvim'} } }
     use {"akinsho/toggleterm.nvim", tag = '*', config = function() require("toggleterm").setup() end }
     use { 'williamboman/mason.nvim', run=":MasonUpdate" }
     use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }

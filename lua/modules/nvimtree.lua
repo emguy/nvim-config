@@ -32,7 +32,7 @@ local function clear_buffer()
   end
 end
 
-
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/nvim/lua/modules/?.lua"
 local toggle_expand = require("nvimtree-toggle-expand").wrap_fn
 
 local function my_on_attach(bufnr)

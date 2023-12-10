@@ -6,7 +6,7 @@ local lib = require "nvim-tree.lib"
 
 local M = {}
 
-M.MAX_FOLDER_DISCOVERY=50
+M.MAX_FOLDER_DISCOVERY=100
 
 -- local function to_lookup_table(list)
 --   local table = {}
@@ -59,7 +59,7 @@ local function gen_collapse_iterator()
         end
       end)
       :recursor(function(node)
-        return expansion_count < M.MAX_FOLDER_DISCOVERY and (node.group_next and { node.group_next } or (node.open and node.nodes))
+        return expansion_count < M.MAX_FOLDER_DISCOVERY and (node.group_next and { node.group_next } or (node.nodes))
       end)
       :iterate()
 
