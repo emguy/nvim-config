@@ -171,5 +171,4 @@ require('nvim-treesitter').setup {
 }
 
 require('nvim-treesitter').install { 'yaml', 'bash' }
-vim.api.nvim_create_autocmd('FileType', { pattern = '*.yaml,*.yml,*.sh', callback = function() vim.treesitter.start() end,
-})
+vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh' }, callback = function() vim.treesitter.start() end })
