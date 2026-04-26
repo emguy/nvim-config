@@ -6,6 +6,8 @@ vim.g.loaded_netrwPlugin = 1
 local config_dir = vim.fn.stdpath('config')
 
 -- set vim options -> :set --
+vim.opt.termguicolors = false
+
 vim.o.backup         = false
 vim.o.cmdheight      = 2
 vim.o.conceallevel   = 0
@@ -83,14 +85,16 @@ require('lazy').setup({
   { 'fatih/vim-go' },
   { 'ntpeters/vim-better-whitespace' },
   { 'hashivim/vim-terraform' },
+  { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' }
 }, {
   root = vim.fn.stdpath('data') .. '/lazy',
 })
 
-require('modules.uischeme')
 require('modules.nvimtree')
 require('modules.cwdrooter')
 require('modules.toggleterm')
+
+require('modules.uischeme')
 
 -- keymaps --
 vim.api.nvim_set_keymap('t', '<c-q>',     '<c-\\><c-n>', {noremap=true})
@@ -120,28 +124,52 @@ vim.api.nvim_create_autocmd('BufReadPost', { pattern='*', command=[[ if @% !~# '
 -- fix 'ntpeters/vim-better-whitespace' on terminal mode --
 vim.api.nvim_create_autocmd('TermOpen', { pattern='*', command=[[ DisableWhitespace ]]} )
 
--- lsp --
+----------------
+-- lsp        --
+----------------
+-- check ~/.local/share/nvim/lazy/nvim-lspconfig/lsp
 vim.lsp.enable({
   -- lua
   "luals",
-  -- nix
-  "nil_ls",
-  "nixd",
   -- python
   "pyright",
-  "ruff",
   -- markdown
-  "ltex",
-  -- terraform
-  "terraformls",
   -- yaml
   "yamlls",
   -- bash
-  "bashls"
+  "bashls",
+  -- helm
+  "helm_ls",
+  -- golang
+  "gopls",
+  -- markdown/tex
+  "ltex"
 })
-
+-- register custom yaml filetypes --
+vim.filetype.add({
+  pattern = {
+    ['.*/.gitlab%-ci.*%.ya?ml'] = 'yaml.gitlab',
+    ['.*/templates/.*%.ya?ml'] = 'yaml.helm',
+    ['.*helmfile.*%.ya?ml'] = 'yaml.helm',
+    ['.*/values.*%.ya?ml'] = 'yaml.helm-values',
+    ['docker%-compose.*%.ya?ml'] = 'yaml.docker-compose',
+    ['compose.*%.ya?ml'] = 'yaml.docker-compose',
+  },
+})
 vim.diagnostic.config({
   virtual_text = true,
   signs = true,
   underline = true,
+})
+----------------
+-- treesitter --
+----------------
+-- github: https://github.com/nvim-treesitter/nvim-treesitter
+require('nvim-treesitter').setup {
+  -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
+  install_dir = vim.fn.stdpath('data') .. '/site'
+}
+
+require('nvim-treesitter').install { 'yaml', 'bash' }
+vim.api.nvim_create_autocmd('FileType', { pattern = '*.yaml,*.yml,*.sh', callback = function() vim.treesitter.start() end,
 })

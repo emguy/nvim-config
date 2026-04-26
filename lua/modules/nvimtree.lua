@@ -7,7 +7,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.cmd('command! TR NvimTreeToggle')
 
 local api = require("nvim-tree.api")
-local view = require "nvim-tree.view"
+local config = require("nvim-tree.config")
 
 local function open_file_without_focus(node)
   api.node.open.edit(node)
@@ -17,12 +17,14 @@ end
 local function clear_buffer()
   local bufs = vim.fn.getbufinfo { bufloaded = 1, buflisted = 1 }
   for _, buf in pairs(bufs) do
-    if buf.name == require("nvim-tree.lib").get_node_at_cursor().absolute_path then
-      if buf.hidden == 0 and (#bufs > 1 or view.View.float.enable) then
+    local node = api.tree.get_node_under_cursor()
+    if node and buf.name == node.absolute_path then
+      local is_float = config.g.view.float.enable
+      if buf.hidden == 0 and (#bufs > 1 or is_float) then
         local winnr = vim.api.nvim_get_current_win()
         vim.api.nvim_set_current_win(buf.windows[1])
         vim.cmd ":bn"
-        if not view.View.float.enable then
+        if not is_float then
           vim.api.nvim_set_current_win(winnr)
         end
       end
