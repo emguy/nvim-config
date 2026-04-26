@@ -9,8 +9,8 @@ local config_dir = vim.fn.stdpath('config')
 vim.o.backup         = false
 vim.o.cmdheight      = 2
 vim.o.conceallevel   = 0
-vim.o.cscopepathcomp = 3
-vim.o.cscopetagorder = 0
+-- vim.o.cscopepathcomp = 3
+-- vim.o.cscopetagorder = 0
 vim.o.hidden         = true
 vim.o.hlsearch       = false
 vim.o.ignorecase     = false
@@ -20,7 +20,7 @@ vim.o.lazyredraw     = true
 vim.o.magic          = true
 vim.o.modeline       = false
 vim.o.mouse          = ''
-vim.o.packpath       = config_dir .. '/packer'
+-- vim.o.packpath       = config_dir .. '/packer'
 vim.o.ruler          = true
 vim.o.scrolloff      = 3
 vim.o.secure         = true
@@ -37,7 +37,7 @@ vim.o.synmaxcol      = 200
 vim.o.timeoutlen     = 600
 vim.o.title          = true
 vim.o.ttimeout       = true
-vim.o.ttymouse       = ''
+-- vim.o.ttymouse       = ''
 vim.o.undodir        = config_dir .. "/.cache/undofile"
 vim.o.undolevels     = 1000
 vim.o.updatetime     = 200
@@ -59,32 +59,35 @@ vim.wo.number         = false
 vim.wo.wrap           = false
 vim.wo.cursorline     = true
 
--- packer --
-local packer = require('packer')
-packer.init {
-  package_root = config_dir,
-  compile_path = config_dir .. '/packer/packer_compiled.vim'
-}
-packer.startup({
-  function()
-    use 'wbthomason/packer.nvim'
-    use 'nvim-tree/nvim-tree.lua'
-    use 'nvim-tree/nvim-web-devicons'
-    use 'neovim/nvim-lspconfig'
-    use { 'nvim-telescope/telescope.nvim', tag = '0.1.4', requires = { {'nvim-lua/plenary.nvim'} } }
-    use {"akinsho/toggleterm.nvim", tag = '*', config = function() require("toggleterm").setup() end }
-    use { 'williamboman/mason.nvim', run=":MasonUpdate" }
-    use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
-    use 'chrisbra/Colorizer'
-    use 'fatih/vim-go'
-    use 'ntpeters/vim-better-whitespace'
-    use 'hashivim/vim-terraform'
-  end,
+-- lazy.nvim bootstrap --
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git', 'clone', '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup({
+  { "mason-org/mason.nvim", opts = {} },
+  { 'nvim-tree/nvim-tree.lua' },
+  { 'nvim-tree/nvim-web-devicons' },
+  { 'neovim/nvim-lspconfig' },
+  { 'nvim-telescope/telescope.nvim' },
+  { 'akinsho/toggleterm.nvim', version = '*' },
+  { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'chrisbra/Colorizer' },
+  { 'fatih/vim-go' },
+  { 'ntpeters/vim-better-whitespace' },
+  { 'hashivim/vim-terraform' },
+}, {
+  root = vim.fn.stdpath('data') .. '/lazy',
 })
 
-require('mason').setup()
 require('modules.uischeme')
-require('modules.lsp')
 require('modules.nvimtree')
 require('modules.cwdrooter')
 require('modules.toggleterm')
@@ -116,3 +119,29 @@ vim.api.nvim_create_autocmd('BufEnter', { pattern='*.yaml,*.yml', command=[[ set
 vim.api.nvim_create_autocmd('BufReadPost', { pattern='*', command=[[ if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif ]] })
 -- fix 'ntpeters/vim-better-whitespace' on terminal mode --
 vim.api.nvim_create_autocmd('TermOpen', { pattern='*', command=[[ DisableWhitespace ]]} )
+
+-- lsp --
+vim.lsp.enable({
+  -- lua
+  "luals",
+  -- nix
+  "nil_ls",
+  "nixd",
+  -- python
+  "pyright",
+  "ruff",
+  -- markdown
+  "ltex",
+  -- terraform
+  "terraformls",
+  -- yaml
+  "yamlls",
+  -- bash
+  "bashls"
+})
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+})
