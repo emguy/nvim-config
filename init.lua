@@ -167,6 +167,5 @@ require('nvim-treesitter').setup {
   -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
-
-require('nvim-treesitter').install { 'yaml', 'bash' }
-vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh' }, callback = function() vim.treesitter.start() end })
+require('nvim-treesitter').install { 'yaml', 'bash', 'javascript', 'typescript', 'go', 'python', 'graphql', 'json' }
+vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh', 'js', 'tx', 'go', 'py' }, callback = function() vim.treesitter.start() end })
