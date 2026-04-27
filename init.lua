@@ -1,13 +1,12 @@
 -- set vim variables -> let g:foo = bar --
 vim.g.mapleader = ','
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 local config_dir = vim.fn.stdpath('config')
 
 -- set vim options -> :set --
-vim.opt.termguicolors = false
-
 vim.o.backup         = false
 vim.o.cmdheight      = 2
 vim.o.conceallevel   = 0
@@ -22,7 +21,6 @@ vim.o.lazyredraw     = true
 vim.o.magic          = true
 vim.o.modeline       = false
 vim.o.mouse          = ''
--- vim.o.packpath       = config_dir .. '/packer'
 vim.o.ruler          = true
 vim.o.scrolloff      = 3
 vim.o.secure         = true
@@ -81,7 +79,7 @@ require('lazy').setup({
   { 'nvim-telescope/telescope.nvim' },
   { 'akinsho/toggleterm.nvim', version = '*' },
   { 'sindrets/diffview.nvim', dependencies = { 'nvim-lua/plenary.nvim' } },
-  { 'chrisbra/Colorizer' },
+  { 'chrisbra/Colorizer', lazy = false },
   { 'fatih/vim-go' },
   { 'ntpeters/vim-better-whitespace' },
   { 'hashivim/vim-terraform' },
