@@ -128,7 +128,8 @@ vim.api.nvim_create_autocmd('BufEnter', { pattern='*.yaml,*.yml', command=[[ set
 vim.api.nvim_create_autocmd('BufReadPost', { pattern='*', command=[[ if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif ]] })
 -- fix 'ntpeters/vim-better-whitespace' on terminal mode --
 vim.api.nvim_create_autocmd('TermOpen', { pattern='*', command=[[ DisableWhitespace ]]} )
-
+-- set nu --
+vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh', 'js', 'tx', 'go', 'py', 'lua', 'md', 'c' }, command=[[ set nu relativenumber ]] })
 ----------------
 -- lsp        --
 ----------------
