@@ -4,6 +4,9 @@ vim.g.mapleader = ','
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- use true color
+vim.opt.termguicolors = true
+
 local config_dir = vim.fn.stdpath('config')
 
 -- set vim options -> :set --
@@ -92,7 +95,11 @@ require('modules.nvimtree')
 require('modules.cwdrooter')
 require('modules.toggleterm')
 
-require('modules.uischeme')
+if vim.opt.termguicolors:get() then
+  require('modules.uischeme')
+else
+  require('modules.uischeme256colors')
+end
 
 -- keymaps --
 vim.api.nvim_set_keymap('t', '<c-q>',     '<c-\\><c-n>', {noremap=true})
@@ -163,9 +170,5 @@ vim.diagnostic.config({
 -- treesitter --
 ----------------
 -- github: https://github.com/nvim-treesitter/nvim-treesitter
-require('nvim-treesitter').setup {
-  -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
-  install_dir = vim.fn.stdpath('data') .. '/site'
-}
 require('nvim-treesitter').install { 'yaml', 'bash', 'javascript', 'typescript', 'go', 'python', 'graphql', 'json' }
-vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh', 'js', 'tx', 'go', 'py' }, callback = function() vim.treesitter.start() end })
+vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh', 'js', 'tx', 'go', 'py', 'lua', 'md', 'c' }, callback = function() vim.treesitter.start() end })
