@@ -110,7 +110,7 @@ vim.api.nvim_set_keymap('n', '<leader>c', '<c-w>s<cmd>terminal<cr>i', {noremap=t
 
 -- telescope --
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', function() builtin.find_files({cwd="~/git/", no_ignore_parent=true}) end, {})
+vim.keymap.set('n', '<leader>ff', function() builtin.find_files({no_ignore_parent=true}) end, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
@@ -167,9 +167,29 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
 })
+
 ----------------
 -- treesitter --
 ----------------
 -- github: https://github.com/nvim-treesitter/nvim-treesitter
 require('nvim-treesitter').install { 'yaml', 'bash', 'javascript', 'typescript', 'go', 'python', 'graphql', 'json' }
 vim.api.nvim_create_autocmd('FileType', { pattern = { 'yaml', 'yaml.*', 'yml', 'sh', 'js', 'tx', 'go', 'py', 'lua', 'md', 'c' }, callback = function() vim.treesitter.start() end })
+
+
+
+----------------------
+---- autocompletion --
+----------------------
+---- auto-completion (:help lsp-completion), trigger manually with ctrl+o ctrl+x
+--vim.api.nvim_create_autocmd("LspAttach", {
+--  callback = function(ev)
+--    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+--    if client and client:supports_method("textDocument/completion") then
+--      -- trigger on every keypress, not just the server's triggerCharacters (:help lsp-autocompletion)
+--      client.server_capabilities.completionProvider.triggerCharacters =
+--        vim.split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_", "")
+--      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+--    end
+--  end,
+--})
+--vim.cmd("set completeopt+=noselect") -- do not pre-select the first item

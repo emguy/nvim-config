@@ -60,6 +60,8 @@ require("nvim-tree").setup({
   sync_root_with_cwd = true,
   disable_netrw = true,
   root_dirs = {'~/git', '~/.config/nvim'},
+  -- Disables mouse click on file to open
+  left_click_targets = false,
   sort_by = "case_sensitive",
   view = {
     width = 36,
